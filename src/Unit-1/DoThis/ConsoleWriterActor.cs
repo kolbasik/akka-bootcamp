@@ -4,10 +4,10 @@ using Akka.Actor;
 namespace WinTail
 {
     /// <summary>
-    /// Actor responsible for serializing message writes to the console.
-    /// (write one message at a time, champ :)
+    ///     Actor responsible for serializing message writes to the console.
+    ///     (write one message at a time, champ :)
     /// </summary>
-    class ConsoleWriterActor : UntypedActor
+    internal class ConsoleWriterActor : UntypedActor
     {
         protected override void OnReceive(object message)
         {
@@ -23,13 +23,14 @@ namespace WinTail
             }
 
             // if message has even # characters, display in red; else, green
-            var even = msg.Length % 2 == 0;
+            var even = msg.Length%2 == 0;
             var color = even ? ConsoleColor.Red : ConsoleColor.Green;
-            var alert = even ? "Your string had an even # of characters.\n" : "Your string had an odd # of characters.\n";
+            var alert = even
+                ? "Your string had an even # of characters.\n"
+                : "Your string had an odd # of characters.\n";
             Console.ForegroundColor = color;
             Console.WriteLine(alert);
             Console.ResetColor();
-
         }
     }
 }
