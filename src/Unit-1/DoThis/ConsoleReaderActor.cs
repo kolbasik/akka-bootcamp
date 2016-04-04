@@ -23,7 +23,8 @@ namespace WinTail
             }
 
             var command = Console.ReadLine();
-            if (!string.IsNullOrEmpty(command) && string.Equals(command, ExitCommand, StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrEmpty(command) &&
+                string.Equals(command, ExitCommand, StringComparison.OrdinalIgnoreCase))
             {
                 // if user typed ExitCommand, shut down the entire actor system (allows the process to exit)
                 Context.System.Shutdown();
@@ -31,7 +32,6 @@ namespace WinTail
             }
 
             _validationActor.Tell(command);
-
         }
 
         private static void PrintInstructions()

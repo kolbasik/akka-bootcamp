@@ -13,14 +13,18 @@ namespace WinTail
             // make consoleWriterActor using these props: Props.Create(() => new ConsoleWriterActor())
             // make consoleReaderActor using these props: Props.Create(() => new ConsoleReaderActor(consoleWriterActor))
 
-            Props consoleWriterProps = Props.Create<ConsoleWriterActor>();
-            IActorRef consoleWriterActor = myActorSystem.ActorOf(consoleWriterProps, "consoleWriterActor");
+            var consoleWriterProps = Props.Create<ConsoleWriterActor>();
+            var consoleWriterActor = myActorSystem.ActorOf(consoleWriterProps, "consoleWriterActor");
 
-            Props validationActorProps = Props.Create(() => new ValidationActor(consoleWriterActor));
-            IActorRef validationActor = myActorSystem.ActorOf(validationActorProps, "validationActor");
+            var tailCoordinatorProps = Props.Create(() => new TailCoordinatorActor());
+            var tailCoordinatorActor = myActorSystem.ActorOf(tailCoordinatorProps, "tailCoordinatorActor");
 
-            Props consoleReaderProps = Props.Create<ConsoleReaderActor>(validationActor);
-            IActorRef consoleReaderActor = myActorSystem.ActorOf(consoleReaderProps, "consoleReaderActor");
+            var validationActorProps =
+                Props.Create(() => new FileValidatorActor(consoleWriterActor, tailCoordinatorActor));
+            var validationActor = myActorSystem.ActorOf(validationActorProps, "validationActor");
+
+            var consoleReaderProps = Props.Create<ConsoleReaderActor>(validationActor);
+            var consoleReaderActor = myActorSystem.ActorOf(consoleReaderProps, "consoleReaderActor");
 
             // tell console reader to begin
             consoleReaderActor.Tell(ConsoleReaderActor.StartCommand);
