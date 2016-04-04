@@ -6,7 +6,6 @@ namespace WinTail
 {
     public class FileObserver : IDisposable
     {
-        private readonly string _absoluteFilePath;
         private readonly string _fileDir;
         private readonly string _fileNameOnly;
         private readonly IActorRef _tailActor;
@@ -15,7 +14,6 @@ namespace WinTail
         public FileObserver(IActorRef tailActor, string absoluteFilePath)
         {
             _tailActor = tailActor;
-            _absoluteFilePath = absoluteFilePath;
             _fileDir = Path.GetDirectoryName(absoluteFilePath);
             _fileNameOnly = Path.GetFileName(absoluteFilePath);
         }

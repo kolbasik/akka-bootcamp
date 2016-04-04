@@ -7,32 +7,38 @@ namespace WinTail
     internal sealed class TailActor : UntypedActor
     {
         private readonly string _filePath;
-        private readonly Stream _fileStream;
-        private readonly StreamReader _fileStreamReader;
-        private readonly FileObserver _observer;
+        private StreamReader _fileStreamReader;
+        private FileObserver _observer;
         private readonly IActorRef _reporterActor;
 
         public TailActor(IActorRef reporterActor, string filePath)
         {
             _reporterActor = reporterActor;
             _filePath = filePath;
+        }
 
+        protected override void PreStart()
+        {
             // start watching file for changes
             _observer = new FileObserver(Self, Path.GetFullPath(_filePath));
             _observer.Start();
 
-            // open the file stream with shared read/write permissions
-            // (so file can be written to while open)
-            _fileStream = new FileStream(
-                Path.GetFullPath(_filePath),
-                FileMode.Open,
-                FileAccess.Read,
-                FileShare.ReadWrite);
-            _fileStreamReader = new StreamReader(_fileStream, Encoding.UTF8);
+            // open the file stream with shared read/write permissions (so file can be written to while open)
+            var fileStream = new FileStream(Path.GetFullPath(_filePath), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            _fileStreamReader = new StreamReader(fileStream, Encoding.UTF8);
 
-            // read the initial contents of the file and send it to console as first msg
+            // read the initial contents of the file and send it to console as first message
             var text = _fileStreamReader.ReadToEnd();
             Self.Tell(new InitialRead(_filePath, text));
+        }
+
+        protected override void PostStop()
+        {
+            _observer.Dispose();
+            _observer = null;
+            _fileStreamReader.Dispose();
+            _fileStreamReader = null;
+            base.PostStop();
         }
 
         protected override void OnReceive(object message)

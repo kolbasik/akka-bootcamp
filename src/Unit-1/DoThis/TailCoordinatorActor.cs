@@ -5,6 +5,35 @@ namespace WinTail
 {
     internal sealed class TailCoordinatorActor : UntypedActor
     {
+        /// <summary>
+        ///     Start tailing the file at user-specified path.
+        /// </summary>
+        public class StartTail
+        {
+            public StartTail(string filePath, IActorRef reporterActor)
+            {
+                FilePath = filePath;
+                ReporterActor = reporterActor;
+            }
+
+            public string FilePath { get; }
+
+            public IActorRef ReporterActor { get; }
+        }
+
+        /// <summary>
+        ///     Stop tailing the file at user-specified path.
+        /// </summary>
+        public class StopTail
+        {
+            public StopTail(string filePath)
+            {
+                FilePath = filePath;
+            }
+
+            public string FilePath { get; private set; }
+        }
+
         protected override void OnReceive(object message)
         {
             if (message is StartTail)
@@ -39,35 +68,6 @@ namespace WinTail
                     //In all other cases, just restart the failing actor
                     return Directive.Restart;
                 });
-        }
-
-        /// <summary>
-        ///     Start tailing the file at user-specified path.
-        /// </summary>
-        public class StartTail
-        {
-            public StartTail(string filePath, IActorRef reporterActor)
-            {
-                FilePath = filePath;
-                ReporterActor = reporterActor;
-            }
-
-            public string FilePath { get; }
-
-            public IActorRef ReporterActor { get; }
-        }
-
-        /// <summary>
-        ///     Stop tailing the file at user-specified path.
-        /// </summary>
-        public class StopTail
-        {
-            public StopTail(string filePath)
-            {
-                FilePath = filePath;
-            }
-
-            public string FilePath { get; private set; }
         }
     }
 }
