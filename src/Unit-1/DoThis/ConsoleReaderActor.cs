@@ -8,13 +8,6 @@ namespace WinTail
         public const string StartCommand = "start";
         public const string ExitCommand = "exit";
 
-        private readonly IActorRef _validationActor;
-
-        public ConsoleReaderActor(IActorRef validationActor)
-        {
-            _validationActor = validationActor;
-        }
-
         protected override void OnReceive(object message)
         {
             if (string.Equals(message as string, StartCommand, StringComparison.OrdinalIgnoreCase))
@@ -31,7 +24,7 @@ namespace WinTail
                 return;
             }
 
-            _validationActor.Tell(command);
+            Context.ActorSelection("akka://MyActorSystem/user/validationActor").Tell(command);
         }
 
         private static void PrintInstructions()
