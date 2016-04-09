@@ -32,6 +32,7 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.sysChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.AddSeriesButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.sysChart)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,21 +44,34 @@
             legend1.Name = "Legend1";
             this.sysChart.Legends.Add(legend1);
             this.sysChart.Location = new System.Drawing.Point(0, 0);
+            this.sysChart.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.sysChart.Name = "sysChart";
             series1.ChartArea = "ChartArea1";
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.sysChart.Series.Add(series1);
-            this.sysChart.Size = new System.Drawing.Size(684, 446);
+            this.sysChart.Size = new System.Drawing.Size(1368, 858);
             this.sysChart.TabIndex = 0;
             this.sysChart.Text = "sysChart";
             // 
+            // AddSeriesButton
+            // 
+            this.AddSeriesButton.Location = new System.Drawing.Point(1134, 781);
+            this.AddSeriesButton.Name = "AddSeriesButton";
+            this.AddSeriesButton.Size = new System.Drawing.Size(222, 65);
+            this.AddSeriesButton.TabIndex = 1;
+            this.AddSeriesButton.Text = "Add Series";
+            this.AddSeriesButton.UseVisualStyleBackColor = true;
+            this.AddSeriesButton.Click += new System.EventHandler(this.AddSeriesButton_Click);
+            // 
             // Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 446);
+            this.ClientSize = new System.Drawing.Size(1368, 858);
+            this.Controls.Add(this.AddSeriesButton);
             this.Controls.Add(this.sysChart);
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "Main";
             this.Text = "System Metrics";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
@@ -70,6 +84,7 @@
         #endregion
 
         private System.Windows.Forms.DataVisualization.Charting.Chart sysChart;
+        private System.Windows.Forms.Button AddSeriesButton;
     }
 }
 
